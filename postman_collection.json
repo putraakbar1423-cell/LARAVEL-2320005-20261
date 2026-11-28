@@ -1,0 +1,100 @@
+{
+  "info": {
+    "name": "Minimarket Putra API",
+    "description": "API Testing Collection for EthioDeploy",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://laravel-2320805-20261.ethiodeploy.app/api/health",
+          "protocol": "https",
+          "host": ["laravel-2320805-20261", "ethiodeploy", "app"],
+          "path": ["api", "health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. Register User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@minimarketputra.com\",\n  \"no_hp\": \"08123456789\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "https://laravel-2320805-20261.ethiodeploy.app/api/register",
+          "protocol": "https",
+          "host": ["laravel-2320805-20261", "ethiodeploy", "app"],
+          "path": ["api", "register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. Login User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@minimarketputra.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "https://laravel-2320805-20261.ethiodeploy.app/api/login",
+          "protocol": "https",
+          "host": ["laravel-2320805-20261", "ethiodeploy", "app"],
+          "path": ["api", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. Get Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_TOKEN_HERE"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://laravel-2320805-20261.ethiodeploy.app/api/profile",
+          "protocol": "https",
+          "host": ["laravel-2320805-20261", "ethiodeploy", "app"],
+          "path": ["api", "profile"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
