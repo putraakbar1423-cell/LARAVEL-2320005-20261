@@ -62,6 +62,23 @@ Route::get('/test-photo/{userId}', function ($userId) {
     ]);
 });
 
+// Debug upload endpoint
+Route::post('/debug-upload', function (\Illuminate\Http\Request $request) {
+    return response()->json([
+        'all_data' => $request->all(),
+        'has_file' => $request->hasFile('foto'),
+        'file_info' => $request->hasFile('foto') ? [
+            'original_name' => $request->file('foto')->getClientOriginalName(),
+            'mime_type' => $request->file('foto')->getMimeType(),
+            'size' => $request->file('foto')->getSize(),
+            'extension' => $request->file('foto')->getClientOriginalExtension(),
+            'is_valid' => $request->file('foto')->isValid(),
+        ] : null,
+        'headers' => $request->headers->all(),
+        'content_type' => $request->header('Content-Type'),
+    ]);
+});
+
 // Endpoint Publik (Belum punya token)
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
