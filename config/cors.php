@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['https://2320005-putra-muhamad-akbar--j0hfk6zn0j.expo.app'],
 
     'allowed_origins_patterns' => [],
 

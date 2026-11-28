@@ -34,6 +34,31 @@ Route::get('/debug', function () {
         'db_database' => config('database.connections.mysql.database'),
         'storage_writable' => is_writable(storage_path()),
         'cache_writable' => is_writable(storage_path('framework/cache')),
+        'storage_link_exists' => is_link(public_path('storage')),
+        'storage_link_target' => is_link(public_path('storage')) ? readlink(public_path('storage')) : null,
+        'public_storage_exists' => file_exists(public_path('storage')),
+        'storage_app_public_exists' => file_exists(storage_path('app/public')),
+    ]);
+});
+
+// Test foto endpoint
+Route::get('/test-photo/{userId}', function ($userId) {
+    $user = \App\Models\User::find($userId);
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+    
+    $photoPath = $user->foto;
+    $fullPath = storage_path('app/public/' . $photoPath);
+    
+    return response()->json([
+        'user_id' => $user->id,
+        'user_name' => $user->name,
+        'foto_field' => $photoPath,
+        'foto_url_generated' => $photoPath ? url('/storage/' . $photoPath) : null,
+        'file_exists' => $photoPath ? file_exists($fullPath) : false,
+        'full_path' => $fullPath,
+        'storage_path' => storage_path('app/public'),
     ]);
 });
 
