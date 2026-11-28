@@ -87,6 +87,36 @@ class ProfileController extends Controller
     // 3. Upload & Konversi Foto Profil (Validasi MIME ketat & Maksimal 5 MB)
     public function updatePhoto(Request $request)
     {
+        // Log request untuk debugging
+        \Log::info('Photo upload request received', [
+            'has_foto' => $request->hasFile('foto'),
+            'all_files' => $request->allFiles(),
+            'all_data' => $request->all(),
+            'all_keys' => array_keys($request->all()),
+            'content_type' => $request->header('Content-Type'),
+            'method' => $request->method(),
+            'input' => $request->input(),
+        ]);
+
+        // DEBUGGING: Cek semua field yang diterima
+        if (!$request->hasFile('foto')) {
+            \Log::error('File foto not found in request', [
+                'all_input' => $request->all(),
+                'files' => $request->allFiles(),
+                'has_any_files' => count($request->allFiles()) > 0,
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Field foto tidak ditemukan dalam request.',
+                'debug' => [
+                    'received_keys' => array_keys($request->all()),
+                    'has_files' => $request->hasFile('foto'),
+                    'all_files' => array_keys($request->allFiles()),
+                ],
+            ], 422);
+        }
+
         $request->validate([
             'foto' => [
                 'required',
@@ -98,6 +128,7 @@ class ProfileController extends Controller
             ],
         ], [
             'foto.required'  => 'Silakan pilih foto profil terlebih dahulu.',
+            'foto.file'      => 'File yang diunggah harus berupa file.',
             'foto.image'     => 'File yang diunggah harus berupa gambar.',
             'foto.mimes'     => 'Ekstensi gambar hanya mendukung JPG, JPEG, PNG, atau WebP.',
             'foto.mimetypes' => 'Tipe MIME file tidak diizinkan oleh server.',
@@ -123,6 +154,11 @@ class ProfileController extends Controller
                 'foto_url' => $request->getSchemeAndHttpHost() . '/storage/' . $relativePath,
             ], 200);
         } catch (Throwable $e) {
+            \Log::error('Photo upload error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage() ?: 'Gagal memproses foto profil.',
